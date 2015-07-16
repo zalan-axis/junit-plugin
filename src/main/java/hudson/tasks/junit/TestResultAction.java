@@ -152,21 +152,21 @@ public class TestResultAction extends AbstractTestResultAction<TestResultAction>
     }
 
     @Override
-    public int getFailCount() {
+    public synchronized int getFailCount() {
         if(totalCount==null)
             getResult();    // this will compute the result
         return failCount;
     }
 
     @Override
-    public int getSkipCount() {
+    public synchronized int getSkipCount() {
         if(totalCount==null)
             getResult();    // this will compute the result
         return skipCount;
     }
 
     @Override
-    public int getTotalCount() {
+    public synchronized int getTotalCount() {
         if(totalCount==null)
             getResult();    // this will compute the result
         return totalCount;

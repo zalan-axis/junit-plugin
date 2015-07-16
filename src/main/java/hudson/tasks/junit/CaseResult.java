@@ -35,6 +35,7 @@ import org.kohsuke.stapler.export.Exported;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Collection;
@@ -184,7 +185,7 @@ public class CaseResult extends TestResult implements Comparable<CaseResult> {
         middle = len - (headBytes+tailBytes);
         if (middle<=0) {
             // if it turns out that we didn't have any middle section, just return the whole thing
-            return FileUtils.readFileToString(stdio);
+            return FileUtils.readFileToString(stdio, Charset.defaultCharset());
         }
 
         return head + "\n...[truncated " + middle + " bytes]...\n" + tail;
@@ -601,7 +602,7 @@ public class CaseResult extends TestResult implements Comparable<CaseResult> {
         }
     }
 
-    /*package*/ void setClass(ClassResult classResult) {
+    /*package*/ synchronized void setClass(ClassResult classResult) {
         this.classResult = classResult;
     }
     

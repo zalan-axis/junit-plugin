@@ -202,10 +202,11 @@ public final class ClassResult extends TabulatedResult implements Comparable<Cla
     	return className;
     }
 
+    @Override
     public int compareTo(ClassResult that) {
         return this.className.compareTo(that.className);
     }
-
+    
     public String getDisplayName() {
         return TestNameTransformer.getTransformedName(getName());
     }
