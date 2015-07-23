@@ -24,10 +24,12 @@
 package hudson.tasks.test;
 
 import hudson.tasks.junit.TestAction;
+import hudson.model.Cause;
 import hudson.model.Run;
 import hudson.model.Result;
 
 import java.util.Collection;
+import java.util.List;
 
 import static java.util.Collections.emptyList;
 
@@ -133,10 +135,14 @@ public abstract class TestResult extends TestObject {
         if (b == null) {
             return null;
         }
+        List<Cause> causes = b.getCauses();
         while(true) {
             b = b.getPreviousBuild();
             if(b==null)
                 return null;
+            if(!Util.similarCauses(causes, b.getCauses())) {
+                continue;
+            }
             AbstractTestResultAction r = b.getAction(getParentAction().getClass());
             if(r!=null) {
                 TestResult result = r.findCorrespondingResult(this.getId());

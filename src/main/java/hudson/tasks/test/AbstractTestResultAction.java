@@ -217,7 +217,17 @@ public abstract class AbstractTestResultAction<T extends AbstractTestResultActio
             loadedBuilds = null;
         }
         while(true) {
-            b = loadedBuilds == null || loadedBuilds.contains(b.number - /* assuming there are no gaps */1) ? b.getPreviousBuild() : null;
+            if(loadedBuilds == null) {
+                Run<?,?> prev = b.getPreviousBuild();
+                while(prev != null && !Util.similarCauses(b.getCauses(), prev.getCauses())) {
+                    prev = prev.getPreviousBuild();
+                }
+                b = prev;
+            } else if(loadedBuilds.contains(b.number - /* assuming there are no gaps */1)) {
+                b = b.getPreviousBuild();
+            } else {
+                b = null;
+            }
             if(b==null)
                 return null;
             U r = b.getAction(type);
