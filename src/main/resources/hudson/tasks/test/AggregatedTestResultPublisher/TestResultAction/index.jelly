@@ -87,6 +87,30 @@ THE SOFTWARE.
               </tr>
             </j:forEach>
           </table>
+
+          <j:if test="${it.failCount!=0}">
+            <h2>${%All Failed Tests}</h2>
+            <table class="pane sortable bigtable">
+              <tr>
+                <td class="pane-header">${%Test Name}</td>
+                <td class="pane-header" style="width:4em">${%Duration}</td>
+                <td class="pane-header" style="width:3em">${%Age}</td>
+              </tr>
+              <j:forEach var="i" items="${it.individuals}">
+                <j:forEach var="f" items="${i.failedTests}">
+                  <tr>
+                    <td class="pane"><t:failed-test result="${f}" url="${rootURL}/${i.owner.url}${i.urlName}${f.url}"/></td>
+                    <td class="pane" style="text-align:right;" data="${f.duration}">
+                      ${f.durationString}
+                    </td>
+                    <td class="pane" style="text-align:right;">
+                      <a href="${rootURL}/${f.failedSinceRun.url}" class="model-link inside">${f.age}</a>
+                    </td>
+                  </tr>
+                </j:forEach>
+              </j:forEach>
+            </table>
+          </j:if>
         </j:otherwise>
       </j:choose>
     </l:main-panel>
